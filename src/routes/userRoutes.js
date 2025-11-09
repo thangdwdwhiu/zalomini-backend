@@ -10,4 +10,6 @@ router.post('/changePassword',authMiddleware, userControlers.changePassword)
 router.post('/changeFullname', authMiddleware, userControlers.changeFullname)
 router.post('/uploadAvatar', authMiddleware, upload.single('image'), userControlers.uploadAvatar)
 router.post('/logout', authMiddleware, userControlers.logout)
+router.get('/profile/:id', authMiddleware, userControlers.getProfile)
+router.get('/hasFriends/:id', authMiddleware, userControlers.hasFriends)
 export default router

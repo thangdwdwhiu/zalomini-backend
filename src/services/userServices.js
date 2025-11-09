@@ -148,7 +148,7 @@ const changePassword = async (userID, passwordNew) =>{
 const changeFullname = async (userID, fullnameNew) =>{
   try{
     const [rows] = await db.query("UPDATE users SET fullname = ?  WHERE user_id = ?", [fullnameNew, userID])
-    if (rows.affectedRows > 0)
+    if (rows.affectedRows === 0)
     {
       throw createError(500, 'Không thể thay đổi họ tên')
     }
@@ -175,5 +175,57 @@ const uploadAvatar = async (userID, avatarNew) =>{
   }
 }
 
+//lay profile
 
-export { login, register, changePassword, changeFullname, uploadAvatar }
+const getProfile = async (userID) =>{
+
+  try{
+const sql = `
+  SELECT 
+    user_id,
+    fullname,
+    avatar,
+    phone,
+    created_at,
+    email,
+    status,
+    (
+      SELECT COUNT(*) 
+      FROM friends 
+      WHERE user_id = ? AND status = 'accepted'
+    ) AS mount_friends
+  FROM users 
+  WHERE user_id = ?
+`;
+
+const [rows] = await db.query(sql, [userID, userID])
+
+return {success: true, profile: rows[0]}
+
+
+  }
+  catch (e) {
+    throw e
+  }
+}
+
+const hasFriends = async (userID) =>{
+  try{
+    const [rows] = await db.query(`SELECT 
+    u.user_id AS friend_id,
+    u.fullname,
+    u.avatar
+FROM friends f
+JOIN users u ON u.user_id = f.friend_id
+WHERE f.user_id = ? AND f.status = 'accepted'
+`, [userID])
+
+    return {success: true, friends: rows}
+  }
+  catch (e) {
+    throw e
+  }
+}
+export { login, register, changePassword, changeFullname, uploadAvatar, getProfile
+  ,hasFriends
+ }

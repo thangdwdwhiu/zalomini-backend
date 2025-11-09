@@ -105,5 +105,32 @@ catch (e) {
 }
 
 }
+//lay profile
 
-export {login, register, changePassword, changeFullname, uploadAvatar, logout}
+const getProfile =  async (req, res) =>{
+    const userID = req.params.id ? req.params.id : req.userID
+    try{
+        const result = await userServices.getProfile(userID)
+        res.status(200).json(result)
+    }
+    catch(e){
+        res.status(500).json({success: false, message: e.message})
+    }
+}
+//lay ban be co san
+const hasFriends =  async (req, res) =>{
+    const userID = req.params.id
+    if (!userID) {
+        res.status(400).json({success: false, message: 'thieu du lieu'})
+    }
+    try{
+        const result = await userServices.hasFriends(userID)
+        res.status(200).json(result)
+    }
+    catch(e){
+        res.status(500).json({success: false, message: e.message})
+    }
+}
+export {login, register, changePassword, changeFullname, uploadAvatar, logout, getProfile,
+    hasFriends
+}
