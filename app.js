@@ -14,6 +14,7 @@ import friendsRoutes from './src/routes/friendRoutes.js'
 import socketHandler from './socket/socket.js';
 import messageRouters from './src/routes/messageRoutes.js'
 import authMiddleWare from './src/middleware/authMiddleware.js';
+import notificationRoutes from './src/routes/notificationRoutes.js'
 
 dotenv.config();
 
@@ -72,6 +73,7 @@ app.get('/', async (req, res) => {
 app.use('/users', userRoutes);
 app.use('/friends', friendsRoutes)
 app.use('/messages', authMiddleWare, messageRouters)
+app.use('/notifications', notificationRoutes)
 
 // 🚀 Khởi động server
 server.listen(port, () => {

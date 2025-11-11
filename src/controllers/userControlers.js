@@ -5,7 +5,7 @@ import * as userServices from '../services/userServices.js'
 const login = async (req, res) => {
     try{
     const {user_id, username, password, phone, avatar, fullname} = await userServices.login(req)
-    const token = generateJWT(user_id);
+    const token = generateJWT(user_id,fullname, username);
     res.cookie('jwt', token, {
     secure: false,
     httpOnly: true,
