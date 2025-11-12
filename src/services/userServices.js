@@ -57,7 +57,7 @@ const login = async (req) => {
     return userData
 
   } catch (e) {
-    throw new Error(e.message)
+    throw e
   }
 };
 
