@@ -1,17 +1,19 @@
 import db from '../../db.js'
 import {generateJWT} from '../utils/jwt.js'
 import * as userServices from '../services/userServices.js'
+import dotenv from 'dotenv'
 
+dotenv.config()
 const login = async (req, res) => {
     try{
     const {user_id, username, password, phone, avatar, fullname} = await userServices.login(req)
     const token = generateJWT(user_id,fullname, username);
 res.cookie('jwt', token, {
-  secure: true,           // bắt buộc HTTPS
+  secure: process.env.URL_FONTEND === "http://localhost:5173" ? false : true,           // bắt buộc HTTPS
   httpOnly: true,         // JS frontend không đọc được
   path: '/',
   maxAge: 1000*60*60*2,   // 2h
-  sameSite: 'None'         // cho phép cross-origin
+  sameSite:process.env.URL_FONTEND === "http://localhost:5173" ? 'Lax' : 'None'         // cho phép cross-origin
 });
 
     res.status(200).json({success: true, message: 'dang nhap thanh cong', data: {user_id, username, password, phone, avatar, fullname }})
