@@ -11,4 +11,7 @@ const getGroupContacts = async (req, res) =>{
         try{
                 const result = await groupServices.getGroupContacts(groupID)
         }
+        catch (e) {
+                
+        }
 }
