@@ -3,6 +3,7 @@ import db from '../../db.js'
 
 
 
+
 const getGroupContacts = async (groupID) =>{
         try{
 
@@ -28,4 +29,23 @@ const [rows] = await db.query(sql, [groupID, groupID, groupID]);
         }
 }
 
-export {getGroupContacts}
+const createGroup = async (groupName, groupAvatar, createBy) => {
+  try {
+    const [rows] = await db.query(
+      `INSERT INTO groups (group_name, group_avatar, created_by)
+       VALUES (?, ?, ?)`,
+      [groupName, groupAvatar, createBy]
+    );
+
+    return {
+      group_id: rows.insertId,
+      group_name: groupName,
+      group_avatar: groupAvatar,
+      created_by: createBy
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {getGroupContacts, createGroup}

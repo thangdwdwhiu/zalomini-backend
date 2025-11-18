@@ -15,6 +15,7 @@ import socketHandler from './socket/socket.js';
 import messageRouters from './src/routes/messageRoutes.js'
 import authMiddleWare from './src/middleware/authMiddleware.js';
 import notificationRoutes from './src/routes/notificationRoutes.js'
+import groupRouters from './src/routes/groupRoutes.js'
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.URL_FONTEND || 'http://localhost:5173',
+    origin: process.env.URL_FONTEND|| 'http://localhost:5173',
     credentials: true,
     
   },
@@ -74,6 +75,7 @@ app.use('/users', userRoutes);
 app.use('/friends', friendsRoutes)
 app.use('/messages', authMiddleWare, messageRouters)
 app.use('/notifications', notificationRoutes)
+app.use('/groups', groupRouters)
 
 // 🚀 Khởi động server
 server.listen(port, () => {
